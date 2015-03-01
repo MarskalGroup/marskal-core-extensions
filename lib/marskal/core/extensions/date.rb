@@ -1,4 +1,7 @@
 class Date
+  def start_of_next_month
+    (self + 1.month).start_of_month
+  end
 
   def for_highcharts
     # MAU 05/2014 - I left the experiments commented out for reference

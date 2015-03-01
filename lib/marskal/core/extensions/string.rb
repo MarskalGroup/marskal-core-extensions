@@ -1,5 +1,9 @@
 class String
 
+  def unquote
+    self.gsub("'","").gsub('"', '')
+  end
+
   def to_object
     self.singularize.classify.constantize
   end
