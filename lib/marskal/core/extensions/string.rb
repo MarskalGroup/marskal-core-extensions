@@ -1,4 +1,8 @@
 class String
+  def replace_eol(p_str = ' ')
+    self.gsub(/(\r)?\n/, p_str)
+  end
+
 
   def unquote
     self.gsub("'","").gsub('"', '')
