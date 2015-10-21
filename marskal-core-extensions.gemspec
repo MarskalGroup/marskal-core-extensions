@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Mike Urban"]
   spec.email         = ["mike@marskalgroup.com"]
   spec.summary       = %q{Many handy uitilities to extend Ruby on Rails core functionality}
-  spec.description   = %q{Extends modules/classes such as Array, String, Numeric, Date, I18n and more}
+  spec.description   = %q{Extends modules/classes such as Array, String, Numeric, Date, I18n, File and more}
   spec.homepage      = "http://www.marskalgroup.com"
   spec.license       = "MIT"
 

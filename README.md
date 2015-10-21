@@ -24,7 +24,8 @@ Or install it yourself as:
 	date.rb      =>  Extensions for data type **Date**
 	i18n.rb      =>  Extensions for the Internationalization module **I18n**
 	string.rb    =>  Extensions for data type **String**
-	
+	file.rb   	 =>  Extensions for data type **File**
+
 Contact
 -------
 Comments and feedback are welcome. Send an email to Mike Urban via mike@marskalgroup.com
@@ -32,4 +33,4 @@ Comments and feedback are welcome. Send an email to Mike Urban via mike@marskalg
 
 ## Contributing
 
-Copyright Marskal Group LLC, 2012-2014
+Copyright Marskal Group LLC, 2012-2016
