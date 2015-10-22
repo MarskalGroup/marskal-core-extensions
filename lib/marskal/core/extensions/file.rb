@@ -17,7 +17,7 @@ class File
           puts "\n"
           next
         else
-          puts line.gsub("\n", '')
+          puts line.gsub(/[\n`]/, '')
         end
         dashed_line_length = [dashed_line_length, line.length].max if line.strip.length > 0
 
