@@ -105,4 +105,81 @@ class String
   end
 
 
+  def subi(p_search, p_replace)
+    self.sub(Regexp.new("#{p_search}",'i'), p_replace)
+  end
+
+  def subi!(p_search, p_replace)
+    self.sub!(Regexp.new("#{p_search}",'i'), p_replace)
+  end
+
+  def gsubi(p_search, p_replace)
+    self.gsub(Regexp.new("#{p_search}",'i'), p_replace)
+  end
+
+  def gsubi!(p_search, p_replace)
+    self.gsub!(Regexp.new("#{p_search}",'i'), p_replace)
+  end
+
+  #this is an imperfect but effective parser for the mysql select columns, however it expans slightly beyond that
+  #this will take any string and spilt it into an array based on commas
+  #however it will ignore commas in the circumstances as defined by the Regex code below
+  #ex:
+  #sql2 = 'id,`primary`,  concat(`id`, name, "hello") as junk, last_col, 1+2, "hello, Mr. Mike" as greeting, [1,2,3] as an_array'
+  #returns and array of 7 elements
+  def smart_comma_parse_to_array()
+    p_new_str = self.clone              #lets copy string so we can make some temporary changes
+    [ Regexp.new("(`.*?`)"),            #we will ignore commas between accent char ``
+      Regexp.new("('.*?')"),            #ignore commas between single quotes ''
+      Regexp.new("(\".*?\")"),          #ignore commas between double quotus ""
+      Regexp.new("(\\{.*?\\})"),        #ignore commas between open and close curly braces {}
+      Regexp.new("(\\[.*?\\])"),        #ignore commas between open and close brackets []
+      Regexp.new("(\\(.*?\\))")         #ignore commas between open and close parenthesis ()
+    ].each do |r|                       #lets process each search separately
+      l_found = p_new_str.scan(r)       #find all string that match the Regex
+      l_found.each do |l_str_array|     #find all occurrences of matches
+        l_str_array.each do |str|         #lup through each find
+          l_new_part = str.gsub(',', '~') #and temporaril replace the comma character, with any non comma character, in this case we use "~"
+          p_new_str.sub!(str, l_new_part) #no place th is newly comma free string back into a copy of original(self) string as is
+        end
+      end
+    end
+    l_comma_locations = p_new_str.indexes_of_char(',')  #now commas only exists where the should be, so lets find each commas location
+    l_comma_locations.insert(0,0) #lets insert a starting point, so that entire string gets processed, including what becomes before the first comma.
+    p_new_str = self.clone        #copy string again, so we can rebuild now that we know where the legit commas are
+    l_result = []                 #initialize our result array
+    l_comma_locations.reverse.each do |idx|                                             #lup through all the comma backwards and crop the string as we go
+      l_result.insert(0, p_new_str.slice!(idx..p_new_str.length).sub(',', ' ').strip)   #we are going backwards, so we need to insert the chopped strin back in proper order
+    end
+    l_result      #return the array
+  end
+
+  #finds all the instances of the specified character in the specied string.
+  # Ex: "1,11,111,1111".indexes_of_char(',')  ==> returns [1, 4, 8]
+  def indexes_of_char(p_char)
+    (0 ... self.length).find_all { |i| self[i,1] == p_char }
+  end
+
+
+  #returns a 2 element array==> [sql_expresession, alias]
+  #  Examples:
+  #       "CONCAT(last_name, first_name) as full_name" ==> ['CONCAT(last_name, first_name)', 'full_name']
+  #       "last_name"                                  ==> [last_name, '']
+  def split_select_column_alias
+    index = self.downcase.rindex(' as ')              #simple check for as, not perfect, but should work in all normal cases
+    if index.nil? || index == 0                       #if not found or found at zero, the we will assume there is no allias
+      return [self.strip, '']                         #then clean up the space and return an with no alias
+    else                                                                #otherwise split into to pieces the sql select expression
+      return [self[0..index].strip, self[(index+3)..self.length].strip] #(usually a column) and then set the second parameter will be the alias.
+    end
+
+  end
+
+  #removes the specific char from the first and last charcter if they exists, otherwise returns the string untouched
+  def remove_begin_end_char(p_char)
+    self[0] == p_char && self[-1] == p_char ? self[1..(self.length-2)] : self
+  end
+
+
+
 end
