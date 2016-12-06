@@ -1,6 +1,10 @@
 ### Change log `(Revision History)`
 ---
 
+###### 0.0.9 '2016-12-06 by MAU'
+* Added require_keys and restrict_keys to Hash class 
+---
+
 ###### 0.0.8 '2016-10-19 by MAU'
 * Added File Name String Sanitizer
 ---
