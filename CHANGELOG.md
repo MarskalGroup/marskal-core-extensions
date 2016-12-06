@@ -1,6 +1,10 @@
 ### Change log `(Revision History)`
 ---
 
+###### 0.0.9b '2016-12-06 by MAU'
+* reset original file structure 
+---
+
 ###### 0.0.9 '2016-12-06 by MAU'
 * Added require_keys and restrict_keys to Hash class 
 ---
